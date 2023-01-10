@@ -1,66 +1,33 @@
 #include "sort.h"
-
 /**
- *
- *rev > swap->prev
- * while (swap < rev->next)
+ * insertion_sort_list - function algortim that sort a list
+ * using insertion sort
+ * @list: the list that will be being sorted
  */
+
 void insertion_sort_list(listint_t **list)
 {
-        listint_t *sorted, *curr, *next, *aux, *temp;
+	listint_t *current = NULL;
 
-        sorted = NULL;
-        curr = *list;
+	if (!list || !(*list))
+		return;
 
-        while (curr != NULL)
-        {
-                next = curr->next;
-
-                if (sorted == NULL || sorted->n > curr->n)
-                {
-                        curr->next = sorted;
-                        sorted = curr;
-			print_list(*(list));
-                } else
-                {
-                        aux = sorted;
-			print_list(*(list));
-
-                        while (aux->next != NULL && aux->next->n <= curr->n)
-				aux = aux->next;
-
-                        if (aux->next == NULL)
-                        {
-                                aux->next = curr;
-                                curr->prev = aux;
-                                curr->next = NULL;
-				print_list(*(list));
-                        } else
-                        {
-                                temp = aux->next;
-                                aux->next = curr;
-                                curr->prev = aux;
-                                curr->next = temp;
-                                temp->prev = curr;
-				print_list(*(list));
-                        }
-                }
-
-                curr = next;
-		print_list(*(list));
-        }
-        *list = sorted;
-	/**
-	listint_t *sorted, *current, *aux, *temp;
-
-	*sorted = NULL;
-	*current = *list;
-
-	while (current != NULL)
+	for (current = *list; current; current = current->next)
 	{
-		next = current->next;
+		while (current->prev && current->prev->n > current->n)
+		{
+			current->prev->next = current->next;
+			if (current->next)
+				current->next->prev = current->prev;
+			current->next = current->prev;
+			current->prev = current->prev->prev;
+			current->next->prev = current;
+			if (current->prev)
+				current->prev->next = current;
+			else
+				*list = current;
+			print_list(*list);
 
-
-
-
+		}
+	}
 }
