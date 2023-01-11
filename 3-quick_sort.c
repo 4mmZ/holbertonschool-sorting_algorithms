@@ -1,81 +1,78 @@
 #include "sort.h"
 
 /**
- * partition - function to sort the data and know the pivot
- *
- *@array:array of data to sort
- *@min: left column of the array
- *@max: right column of the array
- *@size: size of the data
- *
- * Return: pivot
- */
-int partition(int *array, int min, int max, size_t size)
-{
-	int pivot = array[max];
-	int i = (min - 1);
-	int j, tmp;
-
-	for (j = min; j <= max - 1; j++)
-	{
-		if (array[j] < pivot)
-		{
-			i++;
-			if (i != j)
-			{
-				tmp = array[i];
-				array[i] = array[j];
-				array[j] = tmp;
-				print_array(array, size);
-			}
-		}
-	}
-	if (pivot < array[i + 1])
-	{
-		tmp = array[i + 1];
-		array[i + 1] = array[max];
-		array[max] = tmp;
-		print_array(array, size);
-	}
-
-	return (i + 1);
-}
-
-/**
- * quick_recursion - recursion for the quick sort
- *
- *@array:array of data to sort
- *@min: left column of the array
- *@max: right column of the array
- *@size: size of the data
- *
- *Return: void
- */
-void quick_recursion(int *array, int min, int max, size_t size)
-{
-	int pivot;
-
-	if (min < max)
-	{
-		pivot = partition(array, min, max, size);
-		quick_recursion(array, min, pivot - 1, size);
-		quick_recursion(array, pivot, max, size);
-	}
-}
-
-
-/**
- * quick_sort - sorts an array of integers in ascending order
- *
- *@array:array of data to sort
- *@size: size of the data
- *
- *Return: void
- */
+  * quick_sort - ...
+  * @array: ...
+  * @size: ...
+  *
+  * Return: Nothing!
+  */
 void quick_sort(int *array, size_t size)
 {
 	if (!array || size < 2)
 		return;
 
-	quick_recursion(array, 0, size - 1, size);
+	quick_sort_rec(array, 0, size - 1, size);
+}
+
+/**
+  * quick_sort_rec - ...
+  * @array: ...
+  * @lower: ...
+  * @higher: ...
+  * @size: ...
+  *
+  * Return: Nothing!
+  */
+void quick_sort_rec(int *array, int lower, int higher, size_t size)
+{
+	int l_p = 0;
+
+	if (lower < higher)
+	{
+		l_p = lomuto_partition(array, lower, higher, size);
+		quick_sort_rec(array, lower, l_p - 1, size);
+		quick_sort_rec(array, l_p + 1, higher, size);
+	}
+}
+
+/**
+  * lomuto_partition - ...
+  * @array: ...
+  * @lower: ...
+  * @higher: ...
+  * @size: ...
+  *
+  * Return: Nothing!
+  */
+int lomuto_partition(int *array, int lower, int higher, size_t size)
+{
+	int i = 0, j = 0, pivot = 0, aux = 0;
+
+	pivot = array[higher];
+	i = lower;
+
+	for (j = lower; j < higher; ++j)
+	{
+		if (array[j] < pivot)
+		{
+			aux = array[i];
+			array[i] = array[j];
+			array[j] = aux;
+
+			if (aux != array[i])
+				print_array(array, size);
+
+			++i;
+		}
+	}
+
+	aux = array[i];
+	array[i] = array[higher];
+	array[higher] = aux;
+
+	if (aux != array[i])
+		print_array(array, size);
+
+	return (i);
 }
