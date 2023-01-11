@@ -1,8 +1,16 @@
 #include "sort.h"
+
 /**
+ * partition - function to sort the data and know the pivot
  *
+ *@array:array of data to sort
+ *@min: left column of the array
+ *@max: right column of the array
+ *@size: size of the data
+ *
+ * Return: pivot
  */
-void quick_sort(int *array, size_t size)
+int partition(int *array, int min, int max, size_t size)
 {
 	int pivot = array[max];
 	int i = (min - 1);
